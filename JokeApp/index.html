@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Joke Generator</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <div class="container">
+    <h1>Joke Generator</h1>
+    <form id="jokeForm">
+      <label for="keyword">Enter a word:</label>
+      <input type="text" id="name-input" required>
+      <input id="joke-btn" type="submit">Generate Joke</input>
+    </form>
+    <div id="joke-result" id="jokeDisplay"></div>
+  </div>
+
+
+</body>
+
+</html>
+
+<script>
+  let nameInput = document.getElementById("name-input");
+  let output = document.getElementById("joke-result");
+  
+  let jokeBtn = document.getElementById("jokeForm");
+  // Add a click event listener to the button
+  jokeBtn.addEventListener("submit", function () {
+    // Do something when the button is clicked
+    // Fetch data from a URL
+    let nameValue = nameInput.value;
+    console.log(nameValue);
+    event.preventDefault();
+   const request = new Request(`http://localhost:8080/bot/chat?prompt=generate a joke on ${nameValue}`);
+    fetch(request)
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error(response.statusText);
+      }
+    })
+    .then((data) => {
+      document.getElementById("joke-result").innerText = data.content;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+  });
+</script>
